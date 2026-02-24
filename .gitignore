@@ -1,0 +1,17 @@
+# Abaikan semua file gambar secara default
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+
+# Kecualikan gambar di folder public agar tetap ter-deploy
+!public/*.png
+!public/*.jpg
+!public/*.jpeg
+!public/*.gif
+!public/*.svg
+
+# Abaikan folder khusus dokumentasi pribadi
+assets/private/
+docs/images/
