@@ -5,18 +5,20 @@ import { greetings } from "@/lib/content";
 
 /**
  * Full-screen "hello" in several languages, then the page is revealed.
- * Plays once per browser session per version; always skippable.
+ * Plays on every page load, including refreshes, and always starts the visit from the top
+ * so the dot portrait forms again too. Always skippable.
  * Theme with --intro-bg / --intro-fg / --intro-accent on a parent.
  */
-export default function IntroGreeting({ id }: { id: string }) {
+export default function IntroGreeting(_props: { id?: string }) {
   const [step, setStep] = useState(0);
   const [phase, setPhase] = useState<"play" | "leave" | "gone">("play");
-  const key = `porto.intro.${id}`;
   const last = greetings.length - 1;
 
+  // A refresh would normally restore the old scroll position; start from the top instead.
   useEffect(() => {
-    if (sessionStorage.getItem(key)) setPhase("gone");
-  }, [key]);
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    if (!location.hash) window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     if (phase !== "play") return;
@@ -33,13 +35,12 @@ export default function IntroGreeting({ id }: { id: string }) {
       return () => document.documentElement.classList.remove("intro-lock");
     }
     if (phase === "leave") {
-      sessionStorage.setItem(key, "1");
       document.documentElement.classList.add("intro-done");
       const t = window.setTimeout(() => setPhase("gone"), 900);
       return () => window.clearTimeout(t);
     }
     document.documentElement.classList.add("intro-done");
-  }, [phase, key]);
+  }, [phase]);
 
   if (phase === "gone") return null;
 
