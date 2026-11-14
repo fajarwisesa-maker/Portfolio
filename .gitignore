@@ -5,3 +5,4 @@ _archive
 design/src
 design/svg
 .claude
+*.tsbuildinfo
