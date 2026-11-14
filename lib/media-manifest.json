@@ -1,0 +1,90 @@
+{
+  "portrait-casual": {
+    "w": 1100,
+    "h": 1100
+  },
+  "portrait-casual-2": {
+    "w": 956,
+    "h": 956
+  },
+  "portrait-formal": {
+    "w": 880,
+    "h": 1216
+  },
+  "portrait-formal-2": {
+    "w": 864,
+    "h": 1184
+  },
+  "portrait-gils": {
+    "w": 1064,
+    "h": 1599
+  },
+  "cert-dicoding-ai": {
+    "w": 1400,
+    "h": 990
+  },
+  "cert-dicoding-ds": {
+    "w": 1400,
+    "h": 990
+  },
+  "cert-thunderbird": {
+    "w": 1400,
+    "h": 1043
+  },
+  "cert-ict-2025": {
+    "w": 800,
+    "h": 565
+  },
+  "exp-puma": {
+    "w": 960,
+    "h": 1280
+  },
+  "exp-mpk": {
+    "w": 1400,
+    "h": 1050
+  },
+  "exp-mc-graduation": {
+    "w": 800,
+    "h": 533
+  },
+  "exp-mc-isra-miraj": {
+    "w": 502,
+    "h": 1118
+  },
+  "exp-mc-anniversary": {
+    "w": 503,
+    "h": 1117
+  },
+  "exp-mc-school-event": {
+    "w": 800,
+    "h": 599
+  },
+  "exp-osis-division": {
+    "w": 800,
+    "h": 565
+  },
+  "exp-osis-president": {
+    "w": 800,
+    "h": 565
+  },
+  "project-assistfinance": {
+    "w": 1600,
+    "h": 900
+  },
+  "project-company-visit": {
+    "w": 1280,
+    "h": 852
+  },
+  "project-portfolio": {
+    "w": 1600,
+    "h": 838
+  },
+  "logo-presuniv": {
+    "w": 320,
+    "h": 320
+  },
+  "logo-sman2": {
+    "w": 320,
+    "h": 320
+  }
+}

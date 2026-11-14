@@ -1,0 +1,7 @@
+node_modules
+.next
+.env*.local
+_archive
+design/src
+design/svg
+.claude
