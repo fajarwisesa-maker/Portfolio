@@ -234,7 +234,6 @@ export const experience: Experience[] = [
     highlights: [
       "Finalist, Agentic AI Hackathon 2026 (Intelligent Supply Chain) · Socrates",
       "3rd Winner, Business Plan Competition Grand Economic 2026 · PUMA Management",
-      "2nd Rank, Jababeka Scholarship (2025–2026)",
     ],
     roles: [
       { title: "Creative Media Specialist", org: "CompSphere Hackathon", period: "Apr 2026 – now", note: "Designed event visuals, including a large motion-graphic videotron, and kept the brand consistent across all materials." },
@@ -298,6 +297,16 @@ export const certificates: Certificate[] = [
 
 export type Moment = { id: string; caption: string; place: string; era: "school" | "college"; image: string; w: number; h: number };
 export const moments: Moment[] = [
+  // Newest first. College photos are from LinkedIn posts.
+  { id: "siaga-team", caption: "Finalist, Agentic AI Hackathon 2026", place: "Final Demo Day · Oct 2026", era: "college", image: media("moment-siaga-team"), w: 480, h: 319 },
+  { id: "siaga-demo", caption: "Presenting SIAGA to the judges", place: "Agentic AI Hackathon · Oct 2026", era: "college", image: media("moment-siaga-demo"), w: 480, h: 320 },
+  { id: "bpc-trophy", caption: "3rd Winner, Business Plan Competition", place: "Grand Economics 2026", era: "college", image: media("moment-bpc-trophy"), w: 480, h: 853 },
+  { id: "bpc-team", caption: "Team Pintal on the podium", place: "Grand Economics 2026", era: "college", image: media("moment-bpc-team"), w: 480, h: 320 },
+  { id: "ut-team", caption: "Company Visit to PT United Tractors", place: "Project Manager · Apr 2026", era: "college", image: media("moment-ut-team"), w: 480, h: 640 },
+  { id: "ut-appreciation", caption: "Appreciation from United Tractors", place: "Company Visit · Apr 2026", era: "college", image: media("moment-ut-appreciation"), w: 480, h: 640 },
+  { id: "company-visit", caption: "On stage at the United Tractors visit", place: "Company Visit · Apr 2026", era: "college", image: media("project-company-visit"), w: 1280, h: 852 },
+  { id: "puma", caption: "Relations & Communication, PUMA Informatics", place: "President University · 2025–2026", era: "college", image: media("exp-puma"), w: 960, h: 1280 },
+  { id: "interact", caption: "INTERACT 2025 communication training", place: "President University · Sep 2025", era: "college", image: media("moment-interact"), w: 800, h: 533 },
   { id: "osis-president", caption: "President of the Student Council", place: "SMAN 2 Gunung Sahilan", era: "school", image: media("exp-osis-president"), w: 800, h: 565 },
   { id: "mpk", caption: "Chairperson of the Student Representative Council", place: "SMAN 2 Gunung Sahilan", era: "school", image: media("exp-mpk"), w: 1400, h: 1050 },
   { id: "mc-graduation", caption: "MC, graduation ceremony", place: "Riau", era: "school", image: media("exp-mc-graduation"), w: 800, h: 533 },
@@ -305,8 +314,6 @@ export const moments: Moment[] = [
   { id: "mc-school-event", caption: "MC, school event", place: "Riau", era: "school", image: media("exp-mc-school-event"), w: 800, h: 599 },
   { id: "mc-isra-miraj", caption: "MC, Isra Mi'raj commemoration", place: "Riau", era: "school", image: media("exp-mc-isra-miraj"), w: 502, h: 1118 },
   { id: "osis-division", caption: "Head of Ethics & Moral Values Division", place: "SMAN 2 Gunung Sahilan", era: "school", image: media("exp-osis-division"), w: 800, h: 565 },
-  { id: "puma", caption: "Relations & Communication, PUMA Informatics", place: "President University", era: "college", image: media("exp-puma"), w: 960, h: 1280 },
-  { id: "company-visit", caption: "Company Visit 2026, PT United Tractors", place: "President University", era: "college", image: media("project-company-visit"), w: 1280, h: 852 },
 ];
 
 export const nav = [
