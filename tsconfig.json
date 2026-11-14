@@ -36,7 +36,9 @@
     ".next-dev/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules",
-    "_archive"
+    ".open-next",
+    ".wrangler",
+    "_archive",
+    "node_modules"
   ]
 }

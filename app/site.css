@@ -5,7 +5,8 @@
   --muted: #5e5a52;
   --line: rgba(17, 17, 17, 0.14);
   --accent: #ff4b1f;
-  --accent-ink: #d93a12; /* accent dark enough for small text on paper */
+  --accent-ink: #c2310d; /* accent dark enough for small text on paper (4.7:1) */
+  --accent-btn: #d93a12; /* button background behind white text (4.6:1) */
   --paper: #ffffff;
   --glass: rgba(255, 255, 255, 0.62);
   --glass-line: rgba(255, 255, 255, 0.9);
@@ -172,7 +173,7 @@
   margin-left: 10px;
   padding: 10px 18px;
   border-radius: 999px;
-  background: var(--accent);
+  background: var(--accent-btn);
   color: #fff;
   font-size: 14px;
   font-weight: 600;
@@ -1625,7 +1626,7 @@ html:not(.intro-done) .site .hero-copy > * {
   padding: 0 14px 0 28px;
   border: 0;
   border-radius: 999px;
-  background: var(--accent);
+  background: var(--accent-btn);
   color: #fff;
   font: inherit;
   font-size: 17px;
@@ -1811,5 +1812,34 @@ html:not(.intro-done) .site .hero-copy > * {
   }
   .site .plane-trail {
     display: none;
+  }
+}
+
+/* ---------- Final polish ---------- */
+/* Experience cards: logo + title on one row, the date chip always on its own line under the title */
+.site .place header {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px 14px;
+}
+.site .place header div {
+  min-width: 0;
+}
+.site .place header .tag {
+  grid-column: 2;
+  justify-self: start;
+}
+/* Coffee count badge: white digits need a darker orange to stay readable */
+.site .cf-count {
+  background: var(--accent-btn);
+}
+@media (max-width: 420px) {
+  .site .btn-lg {
+    font-size: 15px;
+    padding: 0 16px;
+  }
+  .site .btn-lg span {
+    font-size: 14.5px;
   }
 }

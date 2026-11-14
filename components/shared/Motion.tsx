@@ -2,22 +2,18 @@
 
 import { useEffect } from "react";
 import Lenis from "lenis";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
-
-/** Smooth scrolling wired into GSAP ScrollTrigger. Off when the visitor prefers reduced motion. */
+/** Smooth scrolling (Lenis). Off when the visitor prefers reduced motion. */
 export function SmoothScroll() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const lenis = new Lenis({ anchors: true, lerp: 0.1 });
-    lenis.on("scroll", ScrollTrigger.update);
-    const tick = (t: number) => lenis.raf(t * 1000);
-    gsap.ticker.add(tick);
-    gsap.ticker.lagSmoothing(0);
+    let raf = requestAnimationFrame(function tick(t) {
+      lenis.raf(t);
+      raf = requestAnimationFrame(tick);
+    });
     return () => {
-      gsap.ticker.remove(tick);
+      cancelAnimationFrame(raf);
       lenis.destroy();
     };
   }, []);
@@ -72,14 +68,16 @@ export function RevealObserver() {
   return null;
 }
 
-/** Scroll progress bar (0 → 1) written to --progress on <html>. */
+/** Scroll progress bar. Writes 0..1 to --progress on the bar itself, so a scroll does not restyle the whole page. */
 export function ScrollProgress() {
   useEffect(() => {
+    const bar = document.querySelector<HTMLElement>(".progress");
+    if (!bar) return;
     let raf = 0;
     const update = () => {
       raf = 0;
       const max = document.documentElement.scrollHeight - window.innerHeight;
-      document.documentElement.style.setProperty("--progress", String(max > 0 ? window.scrollY / max : 0));
+      bar.style.setProperty("--progress", String(max > 0 ? window.scrollY / max : 0));
     };
     const on = () => {
       if (!raf) raf = requestAnimationFrame(update);

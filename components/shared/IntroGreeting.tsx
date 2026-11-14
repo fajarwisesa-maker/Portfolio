@@ -45,7 +45,7 @@ export default function IntroGreeting(_props: { id?: string }) {
   if (phase === "gone") return null;
 
   return (
-    <div className="intro" data-phase={phase} aria-hidden={phase === "leave"}>
+    <div className="intro" data-phase={phase} inert={phase === "leave"}>
       <p className="intro-word" key={step} data-final={step === last || undefined}>
         <span className="intro-dot" />
         {greetings[step]}

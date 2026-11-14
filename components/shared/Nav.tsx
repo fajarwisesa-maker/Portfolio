@@ -47,7 +47,7 @@ export default function Nav({
 
   return (
     <header className="nav" data-scrolled={scrolled || undefined} data-open={open || undefined}>
-      <a className="nav-logo" href="#top" aria-label={`${profile.name}, back to top`}>
+      <a className="nav-logo" href="#top" aria-label={`${profile.nick}, ${profile.name}: back to top`}>
         {profile.nick}
         <i aria-hidden />
       </a>

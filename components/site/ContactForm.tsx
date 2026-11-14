@@ -46,7 +46,7 @@ export default function ContactForm({ email }: { email: string }) {
         setMessage("");
         return;
       }
-      if (res.status === 501 || res.status >= 500) {
+      if (res.status === 501 || res.status === 404 || res.status === 405 || res.status >= 500) {
         setStatus("fallback");
         openMailApp();
         return;

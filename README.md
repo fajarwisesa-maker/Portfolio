@@ -65,3 +65,8 @@ Hide a comment by setting `hidden = true` on its row in the Supabase dashboard.
 
 [LinkedIn](https://www.linkedin.com/in/fajar-wisesa) · [GitHub](https://github.com/fajarwisesa-maker) ·
 fajarilhamsuryawisesa@gmail.com
+
+## Deploy (Cloudflare Workers)
+
+Configured with OpenNext. `npm run cf:preview` runs it locally in Cloudflare's runtime, `npm run cf:deploy` publishes it.
+Full steps and the environment variables are in `GUIDE.md` ("Deploy to Cloudflare").

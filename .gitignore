@@ -8,3 +8,5 @@ design/svg
 *.tsbuildinfo
 .next-dev
 design/covers-preview
+.open-next
+.wrangler

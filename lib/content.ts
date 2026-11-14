@@ -13,7 +13,7 @@ export const profile = {
   origin: "Gunung Sahilan, Riau",
   tagline: "I turn messy data into decisions people can act on.",
   focus: ["Python", "SQL", "Machine Learning"],
-  availability: "Aspiring AI & Data Science ",
+  availability: "Aspiring AI & Data Science",
   email: "fajarilhamsuryawisesa@gmail.com",
   /** Public CV file. Empty = the "Download CV" buttons are hidden. */
   cv: "",
@@ -275,7 +275,7 @@ export const certificates: Certificate[] = [
     issuer: "Google · Coursera",
     date: "Aug 2026",
     credential: "9Z7O5QV2XTHP",
-    verify: "https://www.coursera.org/account/accomplishments/professional-cert/9Z7O5QV2XTHP",
+    verify: "https://coursera.org/verify/professional-cert/9Z7O5QV2XTHP",
     courses: [
       { name: "AI Fundamentals" },
       { name: "AI for Brainstorming and Planning", badge: media("badge-ai-for-brainstorming-and-planning") },

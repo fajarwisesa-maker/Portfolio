@@ -202,6 +202,46 @@ git -c http.version=HTTP/1.1 push origin main
 **Put it online (free):** go to vercel.com → *Add New → Project* → import `fajarwisesa-maker/Portfolio` → *Deploy*.
 After that, every `git push` updates the live site automatically.
 
+## 12b. Deploy to Cloudflare
+
+The project is already set up for Cloudflare Workers (via OpenNext). I tested the build and ran the site in
+Cloudflare's local runtime (page, images, icons, contact API all OK). I could not log in to your Cloudflare
+account, so the first real deploy is yours.
+
+**Easiest: connect GitHub (every `git push` redeploys)**
+
+1. Push the project to GitHub (section 12).
+2. Cloudflare dashboard → **Workers & Pages** → **Create** → **Import a repository** → pick `fajarwisesa-maker/Portfolio`.
+3. Build settings:
+   - **Build command:** `npx opennextjs-cloudflare build`
+   - **Deploy command:** `npx wrangler deploy`
+4. Under **Variables and secrets** add (names exactly as written):
+
+| Name | Value | Type |
+|---|---|---|
+| `NEXT_PUBLIC_SITE_URL` | your live address, e.g. `https://portfolio.yourname.workers.dev` | Variable (also needed at **build**) |
+| `NEXT_PUBLIC_SUPABASE_URL` | from Supabase (section 11) | Variable (also at **build**) |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | from Supabase | Variable (also at **build**) |
+| `RESEND_API_KEY` | from Resend (section 11b) | **Secret** |
+| `CONTACT_TO` | your email | Variable |
+
+   The three `NEXT_PUBLIC_` values are baked in while building, so add them in the **Build variables** too, then redeploy after changing them.
+5. After the first deploy, copy your live address into `NEXT_PUBLIC_SITE_URL` and redeploy once, so link previews (WhatsApp, LinkedIn)
+   show the preview image.
+
+**From your own computer instead:** `npx wrangler login` once, then `npm run cf:deploy`.
+Try it locally first with `npm run cf:preview`.
+
+**Custom domain:** Workers & Pages → your project → Settings → Domains & Routes → Add.
+
+### Before you go live, check these
+
+- **Guestbook and coffee need Supabase to be shared.** Without it each visitor only sees their own comments and a coffee count that starts at 0.
+  Do section 11 first, otherwise the "live" guestbook looks empty to everyone.
+- Contact form works without Resend (it opens the visitor's email app), but real delivery needs `RESEND_API_KEY`.
+- The Download CV button is hidden until you set `cv` in `lib/content.ts` (section 10).
+- Unused backup photos in `public/media` (`portrait-casual.jpg`, `portrait-casual3.webp`, `portrait-formal3.webp`) are public once deployed. Delete them if you do not want that.
+
 ## 13. If something breaks
 
 | Problem | Fix |

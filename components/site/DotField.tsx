@@ -286,7 +286,12 @@ export default function DotField({ portrait }: { portrait: string }) {
     }
     const noise: Target = { x: nx, y: ny, s: new Float32Array(N), a: new Uint8Array(N), minPx: 0 };
     const targets: Record<string, Target> = {};
-    for (const name of Object.keys(SHAPES)) targets[name] = shapeTarget(name, N);
+    // Chapter shapes are built one per tick after first paint, so the first load is not blocked.
+    const shapeTimers = Object.keys(SHAPES).map((name, i) =>
+      window.setTimeout(() => {
+        targets[name] = shapeTarget(name, N);
+      }, 1200 + i * 250),
+    );
     const img = new Image();
     img.decoding = "async";
     img.src = portrait;
@@ -458,6 +463,7 @@ export default function DotField({ portrait }: { portrait: string }) {
     raf = requestAnimationFrame(frame);
 
     return () => {
+      shapeTimers.forEach((t) => window.clearTimeout(t));
       cancelAnimationFrame(raf);
       io.disconnect();
       window.removeEventListener("resize", resize);
