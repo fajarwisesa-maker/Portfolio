@@ -6,3 +6,4 @@ design/src
 design/svg
 .claude
 *.tsbuildinfo
+.next-dev
