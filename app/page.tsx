@@ -6,6 +6,7 @@ import Nav from "@/components/shared/Nav";
 import { CopyEmail, SocialIcon, ZoomImage } from "@/components/shared/Bits";
 import { RevealObserver, ScrollProgress, SmoothScroll } from "@/components/shared/Motion";
 import DotField from "@/components/site/DotField";
+import ContactForm from "@/components/site/ContactForm";
 import { Cat, Coffee, CursorTrail, Folders, Polaroids } from "@/components/site/Interactive";
 import "./site.css";
 
@@ -398,10 +399,16 @@ export default function Home() {
         {/* ---------- Epilogue ---------- */}
         <Chapter id="contact" n="05" kicker="Let's talk" title="Have data that needs a" accent="question?" shape="envelope" caption="the message">
           <p className="intro-line" data-rv>
-            {profile.availability}. Email reaches me fastest.
+            {profile.availability}. Planning a collaboration or have an opportunity? Send me a message below.
+          </p>
+          <div data-rv>
+            <ContactForm email={profile.email} />
+          </div>
+          <p className="or-line" data-rv>
+            Prefer your own email app?
           </p>
           <div className="cta" data-rv>
-            <CopyEmail email={profile.email} className="btn btn-ink btn-lg" />
+            <CopyEmail email={profile.email} className="btn btn-lg" />
             {profile.cv && (
               <a className="btn btn-lg" href={profile.cv}>
                 Download CV

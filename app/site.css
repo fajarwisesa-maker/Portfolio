@@ -1441,3 +1441,255 @@ html:not(.intro-done) .site .hero-copy > * {
   margin-top: 6px;
   font-size: 13.5px;
 }
+
+/* ---------- Contact form ---------- */
+.site .cform {
+  display: grid;
+  gap: 16px;
+  max-width: 720px;
+  padding: clamp(18px, 3vw, 28px);
+  border: 1px solid var(--glass-line);
+  border-radius: 24px;
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--shadow);
+}
+.site .cform-topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+.site .cform-topics legend {
+  float: left;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+.site .cform-topics label {
+  position: relative;
+  cursor: pointer;
+}
+.site .cform-topics input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  cursor: pointer;
+}
+.site .cform-topics span {
+  display: inline-block;
+  padding: 10px 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  font-size: 14.5px;
+  font-weight: 600;
+  transition: background 0.25s, color 0.25s, border-color 0.25s, transform 0.3s var(--spring);
+}
+.site .cform-topics label:hover span {
+  transform: translateY(-2px);
+  border-color: var(--ink);
+}
+.site .cform-topics label[data-on] span {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--bg);
+}
+.site .cform-topics input:focus-visible + span {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.site .cform-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.site .cform-field {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+.site .cform-field > span {
+  font-size: 13px;
+  color: var(--muted);
+}
+.site .cform-field input,
+.site .cform-field textarea {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+  color: inherit;
+  font: inherit;
+  font-size: 16px;
+  resize: vertical;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.site .cform-field textarea {
+  min-height: 132px;
+}
+.site .cform-field input:focus,
+.site .cform-field textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(255, 75, 31, 0.2);
+}
+.site .cform-hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+.site .cform-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 20px;
+}
+.site .cform-note {
+  flex: 1 1 220px;
+  font-size: 14px;
+  color: var(--muted);
+  min-height: 1.4em;
+}
+.site .cform-err {
+  color: #c4290a;
+  font-weight: 600;
+}
+.site .or-line {
+  margin: 28px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+.site .or-line + .cta {
+  margin-top: 12px;
+}
+
+/* Primary send button: hover swaps the label for a win, the paper plane flies away and comes back, on a loop */
+.site .send-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 60px;
+  padding: 0 14px 0 28px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font: inherit;
+  font-size: 17px;
+  font-weight: 700;
+  box-shadow: 0 14px 30px -14px rgba(255, 75, 31, 0.85);
+  transition: transform 0.35s var(--spring), box-shadow 0.35s, background 0.3s;
+}
+.site .send-btn:hover:not(:disabled),
+.site .send-btn:focus-visible {
+  transform: translateY(-3px) scale(1.02);
+  background: var(--ink);
+  box-shadow: 0 18px 34px -14px rgba(17, 17, 17, 0.7);
+}
+.site .send-btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+.site .send-btn:disabled {
+  cursor: progress;
+  opacity: 0.85;
+}
+.site .send-label {
+  position: relative;
+  display: grid;
+  overflow: hidden;
+  height: 1.5em;
+  line-height: 1.5;
+}
+.site .send-label span {
+  grid-area: 1 / 1;
+  white-space: nowrap;
+  transition: transform 0.45s var(--ease), opacity 0.3s;
+}
+.site .send-label .l-b {
+  transform: translateY(110%);
+  opacity: 0;
+}
+.site .send-btn:hover:not(:disabled) .l-a,
+.site .send-btn:focus-visible .l-a {
+  transform: translateY(-110%);
+  opacity: 0;
+}
+.site .send-btn:hover:not(:disabled) .l-b,
+.site .send-btn:focus-visible .l-b {
+  transform: none;
+  opacity: 1;
+}
+.site .send-btn[data-sent] .l-a {
+  display: none;
+}
+.site .send-btn[data-sent] .l-b {
+  transform: none;
+  opacity: 1;
+}
+.site .send-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  overflow: hidden;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+}
+.site .send-btn[data-sent] .send-icon {
+  background: #fff;
+  color: #16a34a;
+}
+.site .plane {
+  animation: site-fly 2.6s cubic-bezier(0.5, 0, 0.3, 1) infinite;
+}
+.site .send-btn:hover .plane,
+.site .send-btn:focus-visible .plane {
+  animation-duration: 1.6s;
+}
+.site .send-btn[data-sending] .plane {
+  animation-duration: 0.9s;
+}
+@keyframes site-fly {
+  0% {
+    transform: translate(0, 0) rotate(0);
+    opacity: 1;
+  }
+  38% {
+    transform: translate(30px, -26px) rotate(-8deg);
+    opacity: 0;
+  }
+  39% {
+    transform: translate(-30px, 26px) rotate(-8deg);
+    opacity: 0;
+  }
+  70%,
+  100% {
+    transform: translate(0, 0) rotate(0);
+    opacity: 1;
+  }
+}
+@media (max-width: 560px) {
+  .site .cform-row {
+    grid-template-columns: 1fr;
+  }
+  .site .send-btn {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site .plane {
+    animation: none;
+  }
+}

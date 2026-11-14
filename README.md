@@ -15,6 +15,8 @@ envelope), because the story of data science is the same data taking a new shape
 - **Frosted folders** that open into project case studies, certificates and draggable photo polaroids.
 - **Live guestbook** (name, message, optional photo, emoji reactions you can toggle) and a **coffee counter**
   (one cup per visit) shared by every visitor.
+- **Contact form** with a primary "Send message" button (the paper plane flies away on a loop; hover says "Let's win together").
+  Sends real email through Resend when `RESEND_API_KEY` is set, otherwise opens the visitor's email app.
 - Multi-language greeting intro, smooth scrolling, `prefers-reduced-motion` support, responsive down to 375px.
 
 ## Tech
@@ -41,6 +43,8 @@ To share comments and coffee between all visitors:
    NEXT_PUBLIC_SUPABASE_URL=...
    NEXT_PUBLIC_SUPABASE_ANON_KEY=...
    ```
+
+To receive contact-form messages in your inbox, also set `RESEND_API_KEY` (see `.env.example`).
 
 Hide a comment by setting `hidden = true` on its row in the Supabase dashboard.
 

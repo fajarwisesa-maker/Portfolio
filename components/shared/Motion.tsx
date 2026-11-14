@@ -40,7 +40,34 @@ export function RevealObserver() {
       { rootMargin: "0px 0px -10% 0px", threshold: 0.08 },
     );
     els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
+
+    // Safety net: when the page opens on a deep link (like /#contact) the observer can miss elements,
+    // which would leave them invisible. Reveal anything that is on screen, or already scrolled past.
+    let raf = 0;
+    const sweep = () => {
+      raf = 0;
+      for (const el of els) {
+        if (el.classList.contains("in")) continue;
+        const r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight * 0.95) {
+          el.classList.add("in");
+          io.unobserve(el);
+        }
+      }
+    };
+    const queue = () => {
+      if (!raf) raf = requestAnimationFrame(sweep);
+    };
+    window.addEventListener("scroll", queue, { passive: true });
+    window.addEventListener("resize", queue);
+    const timers = [600, 1800, 3500].map((ms) => window.setTimeout(queue, ms));
+    return () => {
+      io.disconnect();
+      window.removeEventListener("scroll", queue);
+      window.removeEventListener("resize", queue);
+      timers.forEach((t) => window.clearTimeout(t));
+      cancelAnimationFrame(raf);
+    };
   }, []);
   return null;
 }
