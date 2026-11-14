@@ -268,11 +268,14 @@
 .site .cat svg {
   overflow: visible;
 }
+.site .cat {
+  --cat-fur: #8e9097; /* Bubu is grey */
+}
 .site .cat-body {
-  fill: var(--ink);
+  fill: var(--cat-fur);
 }
 .site .cat-tail {
-  stroke: var(--ink);
+  stroke: var(--cat-fur);
   transform-origin: 96px 84px;
   animation: site-tail 2.8s ease-in-out infinite;
 }

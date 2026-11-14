@@ -8,7 +8,7 @@ envelope), because the story of data science is the same data taking a new shape
 
 ## What's inside
 
-- **Hero**: a stippled dot portrait that forms on scroll, with a cursor trail and a cat on the header that
+- **Hero**: a stippled dot portrait that forms on scroll, with a cursor trail and Bubu, a grey cat on the header that
   follows your mouse (and falls asleep if you leave it alone).
 - **Chapters**: Prologue · Where I learned to lead · Where I found data · Where ideas became real ·
   Where you come in · Epilogue.

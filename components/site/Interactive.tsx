@@ -65,7 +65,7 @@ export function CursorTrail() {
 }
 
 /* ---------------- Cat ---------------- */
-/** Sits on the header. Eyes follow the cursor, cheers on click and on coffee, dozes off after 20 s of no activity. */
+/** Bubu, the grey cat on the header. Eyes follow the cursor, says "Meoww!" on click and on coffee, dozes off after 20 s of no activity. */
 export function Cat() {
   const ref = useRef<SVGSVGElement>(null);
   const [mood, setMood] = useState<"idle" | "happy" | "sleep">("idle");
@@ -122,10 +122,11 @@ export function Cat() {
       className="cat"
       data-mood={mood}
       onClick={() => window.dispatchEvent(new Event("porto:coffee"))}
-      aria-label="Pet the cat"
+      aria-label="Pet Bubu the cat"
+      title="Bubu"
     >
       <span className="cat-say" aria-hidden>
-        RORRR!
+        Meoww!
       </span>
       <svg ref={ref} viewBox="0 0 120 96" width="58" height="46" aria-hidden>
         <path className="cat-tail" d="M96 84c14 2 20-8 16-18" fill="none" strokeWidth="7" strokeLinecap="round" />
