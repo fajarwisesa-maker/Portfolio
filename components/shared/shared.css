@@ -607,6 +607,10 @@
 .gb[data-variant="postcard"] .gb-meta {
   padding-right: 40px;
 }
+.gb-avatar-owner img {
+  object-position: 50% 55%;
+  transform: translate(-2px, 9px) scale(1.90);
+}
 
 /* ---------- Zoomable image dialog ---------- */
 .zoom-dialog {

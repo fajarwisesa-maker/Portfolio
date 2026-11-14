@@ -79,6 +79,12 @@ const ICONS: Record<string, React.ReactNode> = {
       <circle cx="17.3" cy="6.7" r="0.6" fill="currentColor" />
     </g>
   ),
+  youtube: (
+    <path
+      fill="currentColor"
+      d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31.7 31.7 0 0 0 0 12a31.7 31.7 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31.7 31.7 0 0 0 24 12a31.7 31.7 0 0 0-.5-5.8zM9.6 15.6V8.4L15.8 12z"
+    />
+  ),
   email: (
     <g fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round">
       <rect x="3" y="5" width="18" height="14" rx="3" />

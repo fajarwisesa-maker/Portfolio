@@ -76,11 +76,11 @@ export default function ContactForm({ email }: { email: string }) {
       <div className="cform-row">
         <label className="cform-field">
           <span>Your name</span>
-          <input value={name} onChange={(e) => setName(e.target.value)} maxLength={80} autoComplete="name" placeholder="Jane Doe" />
+          <input value={name} onChange={(e) => setName(e.target.value)} maxLength={80} autoComplete="name" placeholder="Elon Musk" />
         </label>
         <label className="cform-field">
           <span>Your email</span>
-          <input type="email" value={from} onChange={(e) => setFrom(e.target.value)} maxLength={120} autoComplete="email" placeholder="jane@company.com" />
+          <input type="email" value={from} onChange={(e) => setFrom(e.target.value)} maxLength={120} autoComplete="email" placeholder="spacex@company.com" />
         </label>
       </div>
 
@@ -111,9 +111,16 @@ export default function ContactForm({ email }: { email: string }) {
                 <path d="M5 12.5l4.5 4.5L19 7.5" />
               </svg>
             ) : (
-              <svg className="plane" viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
-                <path d="M21.6 2.4a1 1 0 0 0-1-.2L2.9 9.1a1 1 0 0 0-.1 1.8l6.3 2.9 2.9 6.3a1 1 0 0 0 1.8-.1l6.9-17.7a1 1 0 0 0-.1-1.9zM10.6 12.4l-3.4-1.6 10.7-4.1-6.1 6.9zm1 1.7l6.9-6.1-4.1 10.7-1.6-3.4-1.2-1.2z" />
-              </svg>
+              <>
+                <svg className="plane-trail" viewBox="0 0 42 42" width="42" height="42">
+                  <path d="M3 37 C 13 33, 21 25, 33 9" pathLength="1" />
+                </svg>
+                <svg className="plane" viewBox="0 0 24 24" width="24" height="24">
+                  <path className="p-wing" d="M2.2 10.4 21.8 2.2 14.6 21.8 11.2 13.6z" />
+                  <path className="p-keel" d="M11.2 13.6 10.4 19.6 14 16.2z" />
+                  <path className="p-fold" d="M11.2 13.6 21.8 2.2" />
+                </svg>
+              </>
             )}
           </span>
         </button>

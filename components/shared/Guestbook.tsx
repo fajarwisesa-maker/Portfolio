@@ -127,8 +127,7 @@ export default function Guestbook({ variant, submitLabel = "Post comment", place
         {!loading && comments.length === 0 && <li className="gb-empty">No comments yet. Be the first.</li>}
         {comments.map((c, i) => (
           <li key={c.id} className="gb-item" data-fresh={c.id === freshId || undefined} style={{ ["--i" as string]: i % 7 }}>
-            <div className="gb-avatar" aria-hidden>
-              {c.avatar ? (
+                <div className={`gb-avatar${c.owner ? " gb-avatar-owner" : ""}`} aria-hidden>              {c.avatar ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={c.avatar} alt="" loading="lazy" />
               ) : (

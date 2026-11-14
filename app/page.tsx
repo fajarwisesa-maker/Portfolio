@@ -136,7 +136,9 @@ export default function Home() {
         <Chapter id="prologue" n="00" kicker="Who's telling this" title="The dots were me." accent="Hi." shape="hello" caption="the hello">
           <div className="prologue">
             <figure className="photo" data-rv>
-              <img src={profile.portraits.formal} alt={`Portrait of ${profile.name}`} width={880} height={1216} loading="lazy" />
+              <div className="photo-image">
+                <img src={profile.portraits.formal} alt={`Portrait of ${profile.name}`} width={880} height={1216} loading="lazy" />
+              </div>
               <figcaption>The real one. {profile.location}.</figcaption>
             </figure>
             <div className="prose">
@@ -336,7 +338,7 @@ export default function Home() {
                     <div className="case-media">
                       <ZoomImage src={p.image} alt={`${p.title} preview`} />
                     </div>
-                    <div className="case-body">
+                    <div className="case-head">
                       <p className="mono muted">
                         {p.index} · {p.kind} · {p.year}
                       </p>
@@ -345,26 +347,6 @@ export default function Home() {
                         <span className="tag tag-accent">{p.role}</span>
                       </div>
                       <p className="case-summary">{p.summary}</p>
-                      <dl>
-                        <div>
-                          <dt>Problem</dt>
-                          <dd>{p.problem}</dd>
-                        </div>
-                        <div>
-                          <dt>What I did</dt>
-                          <dd>
-                            <ul>
-                              {p.did.map((d) => (
-                                <li key={d}>{d}</li>
-                              ))}
-                            </ul>
-                          </dd>
-                        </div>
-                        <div>
-                          <dt>Outcome</dt>
-                          <dd>{p.outcome}</dd>
-                        </div>
-                      </dl>
                       <div className="case-foot">
                         <ul className="chips">
                           {p.tags.map((t) => (
@@ -378,6 +360,26 @@ export default function Home() {
                         ))}
                       </div>
                     </div>
+                    <dl className="case-facts">
+                      <div>
+                        <dt>Problem</dt>
+                        <dd>{p.problem}</dd>
+                      </div>
+                      <div>
+                        <dt>What I did</dt>
+                        <dd>
+                          <ul>
+                            {p.did.map((d) => (
+                              <li key={d}>{d}</li>
+                            ))}
+                          </ul>
+                        </dd>
+                      </div>
+                      <div>
+                        <dt>Outcome</dt>
+                        <dd>{p.outcome}</dd>
+                      </div>
+                    </dl>
                   </article>
                 ),
               }))}

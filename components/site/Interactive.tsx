@@ -24,35 +24,37 @@ export function CursorTrail() {
     resize();
     const pts: { x: number; y: number; t: number }[] = [];
     const LIFE = 560;
-    const onMove = (e: PointerEvent) => {
-      pts.push({ x: e.clientX, y: e.clientY, t: performance.now() });
-      if (pts.length > 90) pts.shift();
-    };
     let raf = 0;
     const frame = (now: number) => {
-      raf = requestAnimationFrame(frame);
+      raf = 0;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
       while (pts.length && now - pts[0].t > LIFE) pts.shift();
-      if (pts.length < 3) return;
-      // the colour changes between the dark hero and the paper sections
-      if (tick++ % 20 === 0) m = getComputedStyle(canvas).color.match(/\d+(\.\d+)?/g) ?? m;
-      ctx.lineCap = "round";
-      ctx.lineJoin = "round";
-      for (let i = 1; i < pts.length - 1; i++) {
-        const a = pts[i - 1];
-        const b = pts[i];
-        const c = pts[i + 1];
-        const life = 1 - (now - b.t) / LIFE;
-        ctx.beginPath();
-        ctx.moveTo((a.x + b.x) / 2, (a.y + b.y) / 2);
-        ctx.quadraticCurveTo(b.x, b.y, (b.x + c.x) / 2, (b.y + c.y) / 2);
-        ctx.strokeStyle = `rgba(${m[0]},${m[1]},${m[2]},${(life * 0.85).toFixed(3)})`;
-        ctx.lineWidth = 0.6 + life * 2.2;
-        ctx.stroke();
+      if (pts.length >= 3) {
+        // the colour changes between the dark hero and the paper sections
+        if (tick++ % 20 === 0) m = getComputedStyle(canvas).color.match(/\d+(\.\d+)?/g) ?? m;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        for (let i = 1; i < pts.length - 1; i++) {
+          const a = pts[i - 1];
+          const b = pts[i];
+          const c = pts[i + 1];
+          const life = 1 - (now - b.t) / LIFE;
+          ctx.beginPath();
+          ctx.moveTo((a.x + b.x) / 2, (a.y + b.y) / 2);
+          ctx.quadraticCurveTo(b.x, b.y, (b.x + c.x) / 2, (b.y + c.y) / 2);
+          ctx.strokeStyle = `rgba(${m[0]},${m[1]},${m[2]},${(life * 0.85).toFixed(3)})`;
+          ctx.lineWidth = 0.6 + life * 2.2;
+          ctx.stroke();
+        }
       }
+      if (pts.length) raf = requestAnimationFrame(frame);
     };
-    raf = requestAnimationFrame(frame);
+    const onMove = (e: PointerEvent) => {
+      pts.push({ x: e.clientX, y: e.clientY, t: performance.now() });
+      if (pts.length > 90) pts.shift();
+      if (!raf) raf = requestAnimationFrame(frame);
+    };
     window.addEventListener("pointermove", onMove, { passive: true });
     window.addEventListener("resize", resize);
     return () => {

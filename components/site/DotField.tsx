@@ -268,7 +268,7 @@ export default function DotField({ portrait }: { portrait: string }) {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const small = window.innerWidth < 760;
     const S = small ? 170 : 212; // sampling grid across the portrait (the A1 preview used 190)
-    const N = small ? 10000 : 16500;
+    const N = small ? 6000 : 9000;
 
     // particle state
     const nx = new Float32Array(N);
@@ -303,7 +303,7 @@ export default function DotField({ portrait }: { portrait: string }) {
     let H = 0;
     let dpr = 1;
     const resize = () => {
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       W = window.innerWidth;
       H = window.innerHeight;
       canvas.width = Math.round(W * dpr);
@@ -327,13 +327,15 @@ export default function DotField({ portrait }: { portrait: string }) {
     );
     document.querySelectorAll("[data-chapter]").forEach((el) => io.observe(el));
 
-    const mouse = { x: -9999, y: -9999 };
+    const mouse = { x: 0, y: 0 };
+    let hasPointer = false;
     const onMove = (e: PointerEvent) => {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
+      hasPointer = true;
     };
     const onLeave = () => {
-      mouse.x = mouse.y = -9999;
+      hasPointer = false;
     };
     window.addEventListener("pointermove", onMove, { passive: true });
     document.addEventListener("pointerleave", onLeave);
@@ -401,14 +403,16 @@ export default function DotField({ portrait }: { portrait: string }) {
         const oy = ny[i] * H + Math.cos(t * 0.28 + s * 55) * 14 * drift;
         let x = ox + (bx + T.x[i] * side - ox) * f + Math.sin(t * 1.3 + s * 90) * wobble * (1 - f * 0.7);
         let y = oy + (by + T.y[i] * side - oy) * f + Math.cos(t * 1.1 + s * 70) * wobble * (1 - f * 0.7);
-        const dx = x - mouse.x;
-        const dy = y - mouse.y;
-        const d2 = dx * dx + dy * dy;
-        if (d2 < 10000) {
-          const d = Math.sqrt(d2) || 1;
-          const push = (1 - d / 100) * 30;
-          x += (dx / d) * push;
-          y += (dy / d) * push;
+        if (hasPointer) {
+          const dx = x - mouse.x;
+          const dy = y - mouse.y;
+          const d2 = dx * dx + dy * dy;
+          if (d2 < 10000) {
+            const d = Math.sqrt(d2) || 1;
+            const push = (1 - d / 100) * 30;
+            x += (dx / d) * push;
+            y += (dy / d) * push;
+          }
         }
         if (!placed) {
           px[i] = x;

@@ -670,13 +670,17 @@ html:not(.intro-done) .site .hero-copy > * {
 .site .photo.in:hover {
   transform: rotate(0) translateY(-4px);
 }
+.site .photo-image {
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+}
 .site .photo img {
   display: block;
   width: 100%;
-  height: auto;
-  aspect-ratio: 4 / 5;
+  height: 100%;
   object-fit: cover;
-  object-position: 50% 15%;
+  object-position: 50% 35%;
+  transform: translateX(-8px) scale(1.39);
 }
 .site .photo figcaption {
   margin-top: 10px;
@@ -1091,7 +1095,10 @@ html:not(.intro-done) .site .hero-copy > * {
 /* Project case study */
 .site .case {
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas:
+    "media head"
+    "facts facts";
   gap: clamp(18px, 3vw, 32px);
   padding: clamp(14px, 2.4vw, 26px);
   border: 1px solid var(--line);
@@ -1099,8 +1106,22 @@ html:not(.intro-done) .site .hero-copy > * {
   background: var(--paper);
   box-shadow: 0 30px 60px -40px rgba(40, 30, 10, 0.5);
 }
+.site .case-media {
+  grid-area: media;
+  min-width: 0;
+}
 .site .case-media .zoom img {
   aspect-ratio: 16 / 11;
+}
+.site .case-head {
+  grid-area: head;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.site .case-head .case-foot {
+  margin-top: auto; /* tags and links sit at the bottom, level with the cover image */
+  padding-top: 18px;
 }
 .site .case-title {
   display: flex;
@@ -1119,11 +1140,12 @@ html:not(.intro-done) .site .hero-copy > * {
 .site .case-summary {
   margin-top: 10px;
 }
-.site .case dl {
-  margin-top: 16px;
+.site .case-facts {
+  grid-area: facts;
+  margin-top: 0;
   border-top: 1px solid var(--line);
 }
-.site .case dl > div {
+.site .case-facts > div {
   display: grid;
   grid-template-columns: 96px minmax(0, 1fr);
   gap: 12px;
@@ -1157,7 +1179,6 @@ html:not(.intro-done) .site .hero-copy > * {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  margin-top: 14px;
 }
 .site .chips {
   display: flex;
@@ -1177,11 +1198,32 @@ html:not(.intro-done) .site .hero-copy > * {
   text-decoration: none;
   border-bottom: 1.5px solid currentColor;
 }
+/* Wide screens: Problem / What I did / Outcome become three columns under the cover */
+@media (min-width: 981px) {
+  .site .case-facts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0 clamp(20px, 3vw, 36px);
+    padding-top: 18px;
+  }
+  .site .case-facts > div {
+    display: block;
+    padding: 0;
+    border-bottom: 0;
+  }
+  .site .case-facts dt {
+    margin-bottom: 6px;
+  }
+}
 @media (max-width: 760px) {
   .site .case {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      "media"
+      "head"
+      "facts";
   }
-  .site .case dl > div {
+  .site .case-facts > div {
     grid-template-columns: 1fr;
     gap: 2px;
   }
@@ -1650,33 +1692,107 @@ html:not(.intro-done) .site .hero-copy > * {
   background: #fff;
   color: #16a34a;
 }
+.site .send-icon {
+  position: relative;
+}
 .site .plane {
-  animation: site-fly 2.6s cubic-bezier(0.5, 0, 0.3, 1) infinite;
+  position: relative;
+  z-index: 1;
+  overflow: visible;
+  animation: site-fly 2.8s linear infinite;
+}
+.site .p-wing {
+  fill: currentColor;
+}
+.site .p-keel {
+  fill: currentColor;
+  fill-opacity: 0.62;
+}
+.site .p-fold {
+  fill: none;
+  stroke: var(--accent); /* crease, same colour as the button so it reads as a fold */
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+.site .send-btn:hover:not(:disabled) .p-fold,
+.site .send-btn:focus-visible .p-fold {
+  stroke: var(--ink);
+}
+.site .plane-trail {
+  position: absolute;
+  inset: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-dasharray: 0.06 0.1;
+  opacity: 0;
+  animation: site-trail 2.8s linear infinite;
 }
 .site .send-btn:hover .plane,
-.site .send-btn:focus-visible .plane {
-  animation-duration: 1.6s;
+.site .send-btn:hover .trail,
+.site .send-btn:focus-visible .plane,
+.site .send-btn:focus-visible .trail {
+  animation-duration: 1.9s;
 }
-.site .send-btn[data-sending] .plane {
-  animation-duration: 0.9s;
+.site .send-btn[data-sending] .plane,
+.site .send-btn[data-sending] .trail {
+  animation-duration: 1s;
 }
+/* Wind up, swoop away along an arc, re-enter from the lower left, overshoot, settle. */
 @keyframes site-fly {
   0% {
-    transform: translate(0, 0) rotate(0);
+    transform: translate(0, 0) rotate(0) scale(1);
     opacity: 1;
+    animation-timing-function: ease-out;
   }
-  38% {
-    transform: translate(30px, -26px) rotate(-8deg);
+  9% {
+    transform: translate(-3px, 3px) rotate(-8deg) scale(0.96);
+    opacity: 1;
+    animation-timing-function: cubic-bezier(0.5, 0, 0.9, 0.5);
+  }
+  26% {
+    transform: translate(15px, -6px) rotate(10deg) scale(0.92);
+    opacity: 1;
+    animation-timing-function: ease-in;
+  }
+  40% {
+    transform: translate(36px, -30px) rotate(-6deg) scale(0.7);
     opacity: 0;
   }
-  39% {
-    transform: translate(-30px, 26px) rotate(-8deg);
+  41% {
+    transform: translate(-30px, 28px) rotate(-12deg) scale(0.7);
     opacity: 0;
+    animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1);
   }
-  70%,
+  62% {
+    transform: translate(2px, -3px) rotate(5deg) scale(1.08);
+    opacity: 1;
+    animation-timing-function: ease-in-out;
+  }
+  76%,
   100% {
-    transform: translate(0, 0) rotate(0);
+    transform: translate(0, 0) rotate(0) scale(1);
     opacity: 1;
+  }
+}
+@keyframes site-trail {
+  0%,
+  10% {
+    stroke-dashoffset: 0.3;
+    opacity: 0;
+  }
+  14% {
+    opacity: 0.75;
+  }
+  34% {
+    stroke-dashoffset: 0;
+    opacity: 0.75;
+  }
+  42%,
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
   }
 }
 @media (max-width: 560px) {
@@ -1689,7 +1805,11 @@ html:not(.intro-done) .site .hero-copy > * {
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .site .plane {
+  .site .plane,
+  .site .plane-trail {
     animation: none;
+  }
+  .site .plane-trail {
+    display: none;
   }
 }
