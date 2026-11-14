@@ -7,3 +7,4 @@ design/svg
 .claude
 *.tsbuildinfo
 .next-dev
+design/covers-preview
