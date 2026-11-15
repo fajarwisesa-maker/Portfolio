@@ -11,7 +11,7 @@ const seed = (): GuestComment[] => [
     id: "seed-owner",
     name: "Fajar",
     message: "Welcome! Leave a note, a question or just say hi. I read every one.",
-    avatar: "/media/portrait-casual.webp",
+    avatar: "/media/portrait-casual3.webp",
     createdAt: Date.now() - 1000 * 60 * 60 * 5,
     reactions: {},
     owner: true,

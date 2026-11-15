@@ -6,14 +6,35 @@ import type { GuestComment, RealtimeAdapter, RealtimeEvent } from "./types";
 type Row = { id: string; name: string; message: string; avatar_url: string | null; created_at: string };
 type ReactionRow = { comment_id: string; emoji: string; count: number };
 
-const toComment = (r: Row, reactions: Record<string, number> = {}): GuestComment => ({
-  id: r.id,
-  name: r.name,
-  message: r.message,
-  avatar: r.avatar_url,
-  createdAt: new Date(r.created_at).getTime(),
+const isOwnerName = (name: string) => {
+  const n = name.trim().toLowerCase();
+  return n === "fajar" || n === "wise" || n === "fajar wisesa" || n === "fajar ilham surya wisesa";
+};
+
+export const OWNER_WELCOME_ID = "00000000-0000-0000-0000-000000000001";
+
+const createOwnerComment = (reactions: Record<string, number> = {}): GuestComment => ({
+  id: OWNER_WELCOME_ID,
+  name: "Fajar",
+  message: "Welcome! Leave a note, a question or just say hi. I read every one.",
+  avatar: "/media/portrait-casual3.webp",
+  createdAt: 1731600000000,
   reactions,
+  owner: true,
 });
+
+const toComment = (r: Row, reactions: Record<string, number> = {}): GuestComment => {
+  const owner = isOwnerName(r.name);
+  return {
+    id: r.id,
+    name: r.name,
+    message: r.message,
+    avatar: r.avatar_url ?? (owner ? "/media/portrait-casual3.webp" : null),
+    createdAt: new Date(r.created_at).getTime(),
+    reactions,
+    owner,
+  };
+};
 
 export function createSupabaseAdapter(url: string, anonKey: string): RealtimeAdapter {
   const sb = createClient(url, anonKey);
@@ -56,7 +77,12 @@ export function createSupabaseAdapter(url: string, anonKey: string): RealtimeAda
       for (const r of (reacts ?? []) as ReactionRow[]) {
         byComment.set(r.comment_id, { ...(byComment.get(r.comment_id) ?? {}), [r.emoji]: r.count });
       }
-      return ((rows ?? []) as Row[]).map((r) => toComment(r, byComment.get(r.id)));
+      const list = ((rows ?? []) as Row[]).map((r) => toComment(r, byComment.get(r.id)));
+      // Selalu tampilkan pesan sambutan resmi Fajar jika belum ada di list
+      if (!list.some((c) => c.id === OWNER_WELCOME_ID || c.owner)) {
+        list.unshift(createOwnerComment(byComment.get(OWNER_WELCOME_ID)));
+      }
+      return list;
     },
     async postComment({ name, message, avatar }) {
       let avatar_url: string | null = null;
@@ -75,7 +101,7 @@ export function createSupabaseAdapter(url: string, anonKey: string): RealtimeAda
     },
     async react(commentId, emoji, delta) {
       const { error } = await sb.rpc("react", { p_comment_id: commentId, p_emoji: emoji, p_delta: delta });
-      if (error) throw error;
+      if (error && commentId !== OWNER_WELCOME_ID) throw error;
     },
     async getCoffee() {
       const { data, error } = await sb.from("coffee").select("count").eq("id", 1).single();

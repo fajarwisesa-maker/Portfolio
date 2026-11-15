@@ -40,3 +40,14 @@ button {
   clip-path: inset(50%);
   white-space: nowrap;
 }
+
+/* Sembunyikan watermark Netlify Drawer / badge */
+netlify-drawer,
+#netlify-drawer,
+[data-netlify-drawer],
+div[class*="netlify-drawer"],
+iframe[src*="netlify"] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
