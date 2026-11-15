@@ -519,12 +519,12 @@ html:not(.intro-done) .site .hero-copy > * {
   .site .hero-pin {
     position: relative;
     height: auto;
-    min-height: 100svh;
+    min-height: auto;
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
     align-items: end;
     padding-top: 96px;
-    padding-bottom: 114px; /* keeps the buttons clear of the coffee bubble */
+    padding-bottom: 60px;
   }
   .site .hero .cta {
     margin-top: 20px;
@@ -635,6 +635,7 @@ html:not(.intro-done) .site .hero-copy > * {
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas: "side" "main";
     gap: 8px;
+    padding-top: 56px;
   }
   .site .chapter-side {
     position: relative;
@@ -1013,6 +1014,16 @@ html:not(.intro-done) .site .hero-copy > * {
   animation: site-drop 0.6s var(--spring) both;
   animation-delay: calc(var(--i) * 50ms);
 }
+/* Touch screens only: keep a dragged photo inside the folder and let the page scroll vertically,
+   so a photo can never widen the page and drag the fixed nav sideways. Desktop mouse is untouched. */
+@media (pointer: coarse) {
+  .site .polaroids {
+    overflow-x: clip;
+  }
+  .site .polaroids li {
+    touch-action: pan-y;
+  }
+}
 .site .polaroids li:nth-child(even) {
   margin-top: 22px;
 }
@@ -1318,6 +1329,12 @@ html:not(.intro-done) .site .hero-copy > * {
   border-top: 2px solid var(--ink);
   font: 500 12px/1.5 var(--font-mono), monospace;
   color: var(--muted);
+}
+.site .foot > span:last-child {
+  flex-basis: 100%;
+  margin-top: 6px;
+  font-size: 11px;
+  opacity: 0.7;
 }
 
 @keyframes site-pulse {

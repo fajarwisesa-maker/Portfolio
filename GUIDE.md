@@ -219,7 +219,7 @@ account, so the first real deploy is yours.
 
 | Name | Value | Type |
 |---|---|---|
-| `NEXT_PUBLIC_SITE_URL` | your live address, e.g. `https://portfolio.yourname.workers.dev` | Variable (also needed at **build**) |
+| `NEXT_PUBLIC_SITE_URL` | your live address, e.g. `https://fajarwisesa.pages.dev` | Variable (also needed at **build**) |
 | `NEXT_PUBLIC_SUPABASE_URL` | from Supabase (section 11) | Variable (also at **build**) |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | from Supabase | Variable (also at **build**) |
 | `RESEND_API_KEY` | from Resend (section 11b) | **Secret** |

@@ -1,8 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
-// Set NEXT_PUBLIC_SITE_URL to your live address (for example https://fajar.pages.dev) so shared links get an absolute preview image.
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+// In production, NEXT_PUBLIC_SITE_URL defaults to your live address so shared links get an absolute preview image.
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.NODE_ENV === "production" ? "https://fajarwisesa.pages.dev" : "http://localhost:3000");
 const title = "Fajar Ilham Surya Wisesa · Aspiring Data Scientist";
 const description =
   "Portfolio of Fajar Ilham Surya Wisesa, Informatics student at President University focused on data science, analysis and machine learning.";

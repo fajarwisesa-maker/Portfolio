@@ -222,24 +222,69 @@ export function Folders({ items, initial = null, label }: { items: FolderItem[];
 }
 
 /* ---------------- Polaroids ---------------- */
+/** Clamp into [min, max]. When the photo is wider than the grid, centre it instead of letting it jump. */
+const clamp = (v: number, min: number, max: number) => (max < min ? (min + max) / 2 : Math.min(max, Math.max(min, v)));
+
+/** Phones, tablets and touch screens: the places the drag needs a fence. */
+const touchDevice = () => window.matchMedia("(pointer: coarse)").matches;
+/** Only a finger gets fenced in. A mouse drag on any screen size stays free, like it was before. */
+const staysInFolder = (pointerType: string) => pointerType === "touch";
+
+function place(el: HTMLLIElement, x: number, y: number) {
+  el.dataset.x = String(x);
+  el.dataset.y = String(y);
+  el.style.setProperty("--x", `${x}px`);
+  el.style.setProperty("--y", `${y}px`);
+}
+
 export function Polaroids({ items }: { items: Moment[] }) {
   const top = useRef(10);
+  const list = useRef<HTMLUListElement>(null);
+
+  // Keep touch photos inside the grid after a resize or an orientation change.
+  useEffect(() => {
+    const fit = () => {
+      if (!touchDevice()) return;
+      for (const el of Array.from(list.current?.children ?? []) as HTMLLIElement[]) {
+        const grid = list.current?.getBoundingClientRect();
+        if (!grid) return;
+        const x = Number(el.dataset.x ?? 0);
+        const y = Number(el.dataset.y ?? 0);
+        const r = el.getBoundingClientRect();
+        const baseLeft = r.left - x;
+        const baseTop = r.top - y;
+        place(
+          el,
+          clamp(x, grid.left - baseLeft, grid.right - baseLeft - r.width),
+          clamp(y, grid.top - baseTop, grid.bottom - baseTop - r.height),
+        );
+      }
+    };
+    window.addEventListener("resize", fit);
+    return () => window.removeEventListener("resize", fit);
+  }, []);
+
   const onDown = (e: React.PointerEvent<HTMLLIElement>) => {
     const el = e.currentTarget;
+    const bounded = staysInFolder(e.pointerType);
+    const grid = bounded ? el.parentElement?.getBoundingClientRect() : undefined;
+    // Measured before the drag starts, so the 1.06 scale-up doesn't shift the limits.
+    const rect = el.getBoundingClientRect();
     const sx = e.clientX;
     const sy = e.clientY;
     const ox = Number(el.dataset.x ?? 0);
     const oy = Number(el.dataset.y ?? 0);
+    const baseLeft = rect.left - ox;
+    const baseTop = rect.top - oy;
+    const minX = grid ? grid.left - baseLeft : -Infinity;
+    const maxX = grid ? grid.right - baseLeft - rect.width : Infinity;
+    const minY = grid ? grid.top - baseTop : -Infinity;
+    const maxY = grid ? grid.bottom - baseTop - rect.height : Infinity;
     el.setPointerCapture(e.pointerId);
     el.style.zIndex = String(++top.current);
     el.dataset.drag = "";
     const move = (ev: PointerEvent) => {
-      const x = ox + ev.clientX - sx;
-      const y = oy + ev.clientY - sy;
-      el.dataset.x = String(x);
-      el.dataset.y = String(y);
-      el.style.setProperty("--x", `${x}px`);
-      el.style.setProperty("--y", `${y}px`);
+      place(el, clamp(ox + ev.clientX - sx, minX, maxX), clamp(oy + ev.clientY - sy, minY, maxY));
     };
     const up = () => {
       delete el.dataset.drag;
@@ -254,7 +299,7 @@ export function Polaroids({ items }: { items: Moment[] }) {
   return (
     <>
       <p className="hint">Drag the photos around.</p>
-      <ul className="polaroids">
+      <ul className="polaroids" ref={list}>
         {items.map((m, i) => (
           <li key={m.id} onPointerDown={onDown} style={{ ["--r" as string]: `${((i * 37) % 11) - 5}deg`, ["--i" as string]: i }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}

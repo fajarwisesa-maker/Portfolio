@@ -438,6 +438,9 @@ export default function Home() {
       <footer className="foot">
         <span>© 2026 {profile.name}</span>
         <span>Same data, new shape. Made with a lot of coffee.</span>
+        <span>
+          Guestbook comments and avatars are stored and visible to all visitors. Contact messages go to my email and are not stored. No tracking cookies.
+        </span>
       </footer>
       <Coffee />
     </div>

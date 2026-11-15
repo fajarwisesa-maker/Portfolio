@@ -64,7 +64,7 @@ export async function POST(req: Request) {
   });
 
   if (!res.ok) {
-    console.error("Resend error", res.status, await res.text().catch(() => ""));
+    console.error("Resend error", res.status);
     return NextResponse.json({ ok: false, error: "Could not send right now." }, { status: 502 });
   }
   return NextResponse.json({ ok: true });
