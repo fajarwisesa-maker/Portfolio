@@ -70,7 +70,8 @@ export function useGuestbook() {
     if (!name) return setError("Add your name so I know who to thank."), false;
     if (!message) return setError("Write a message first."), false;
     const last = Number(localStorage.getItem(K_LAST_COMMENT) ?? 0);
-    if (Date.now() - last < LIMITS.commentCooldownMs) return setError("Easy there. You can post again in a few seconds."), false;
+    const isOwner = typeof window !== "undefined" && localStorage.getItem("porto.isOwner") === "true";
+    if (!isOwner && Date.now() - last < LIMITS.commentCooldownMs) return setError("Easy there. You can post again in a few seconds."), false;
     try {
       const avatar = file ? await toAvatarBlob(file) : null;
       const comment = await getRealtime().postComment({ name, message, avatar });

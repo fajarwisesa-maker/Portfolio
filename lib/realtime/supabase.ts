@@ -90,6 +90,8 @@ export function createSupabaseAdapter(url: string, anonKey: string): RealtimeAda
         const path = `${crypto.randomUUID()}.webp`;
         const up = await sb.storage.from("avatars").upload(path, avatar, { contentType: "image/webp" });
         if (!up.error) avatar_url = sb.storage.from("avatars").getPublicUrl(path).data.publicUrl;
+      } else if (isOwnerName(name)) {
+        avatar_url = "/media/portrait-casual3.webp";
       }
       const { data, error } = await sb
         .from("comments")

@@ -28,7 +28,21 @@ export default function Guestbook({ variant, submitLabel = "Post comment", place
   const [preview, setPreview] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
   const [now, setNow] = useState(() => Date.now());
+  const [isOwner, setIsOwner] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  // Auto-detect Owner mode on this device
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const urlHasOwner = window.location.hash === "#owner" || window.location.search.includes("owner");
+    const stored = localStorage.getItem("porto.isOwner") === "true";
+    if (urlHasOwner || stored) {
+      localStorage.setItem("porto.isOwner", "true");
+      setIsOwner(true);
+      setName("Fajar");
+      setPreview("/media/portrait-casual3.webp");
+    }
+  }, []);
 
   useEffect(() => {
     const id = window.setInterval(() => setNow(Date.now()), 30_000);
@@ -36,11 +50,15 @@ export default function Guestbook({ variant, submitLabel = "Post comment", place
   }, []);
 
   useEffect(() => {
+    if (isOwner && !file) {
+      setPreview("/media/portrait-casual3.webp");
+      return;
+    }
     if (!file) return setPreview(null);
     const url = URL.createObjectURL(file);
     setPreview(url);
     return () => URL.revokeObjectURL(url);
-  }, [file]);
+  }, [file, isOwner]);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,6 +70,10 @@ export default function Guestbook({ variant, submitLabel = "Post comment", place
       setMessage("");
       setFile(null);
       if (fileRef.current) fileRef.current.value = "";
+      if (isOwner) {
+        setName("Fajar");
+        setPreview("/media/portrait-casual3.webp");
+      }
     }
   };
 
@@ -83,7 +105,30 @@ export default function Guestbook({ variant, submitLabel = "Post comment", place
             onChange={(e) => setFile(e.target.files?.[0] ?? null)}
           />
           <label className="gb-field gb-name">
-            <span className="gb-label">Name</span>
+            <span className="gb-label" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              <span>Name</span>
+              {isOwner && (
+                <span
+                  className="gb-badge"
+                  style={{ cursor: "pointer", fontSize: "9px", padding: "1px 6px" }}
+                  title="Owner device detected"
+                  onClick={() => {
+                    const next = !isOwner;
+                    setIsOwner(next);
+                    localStorage.setItem("porto.isOwner", String(next));
+                    if (!next) {
+                      setName("");
+                      setPreview(null);
+                    } else {
+                      setName("Fajar");
+                      setPreview("/media/portrait-casual3.webp");
+                    }
+                  }}
+                >
+                  👑 OWNER
+                </span>
+              )}
+            </span>
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
