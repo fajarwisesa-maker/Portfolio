@@ -18,7 +18,7 @@ const createOwnerComment = (reactions: Record<string, number> = {}): GuestCommen
   name: "Fajar",
   message: "Welcome! Leave a note, a question or just say hi. I read every one.",
   avatar: "/media/portrait-casual3.webp",
-  createdAt: 1731600000000,
+  createdAt: Date.now() - 3600_000,
   reactions,
   owner: true,
 });
@@ -78,9 +78,21 @@ export function createSupabaseAdapter(url: string, anonKey: string): RealtimeAda
         byComment.set(r.comment_id, { ...(byComment.get(r.comment_id) ?? {}), [r.emoji]: r.count });
       }
       const list = ((rows ?? []) as Row[]).map((r) => toComment(r, byComment.get(r.id)));
-      // Selalu tampilkan pesan sambutan resmi Fajar jika belum ada di list
-      if (!list.some((c) => c.id === OWNER_WELCOME_ID || c.owner)) {
-        list.unshift(createOwnerComment(byComment.get(OWNER_WELCOME_ID)));
+
+      // Pastikan pesan welcome Fajar tersimpan di Supabase agar reaction live berfungsi
+      const hasWelcomeInDB = ((rows ?? []) as Row[]).some((r) => r.id === OWNER_WELCOME_ID);
+      if (!hasWelcomeInDB) {
+        sb.from("comments")
+          .upsert({
+            id: OWNER_WELCOME_ID,
+            name: "Fajar",
+            message: "Welcome! Leave a note, a question or just say hi. I read every one.",
+            avatar_url: "/media/portrait-casual3.webp",
+          })
+          .then();
+        if (!list.some((c) => c.id === OWNER_WELCOME_ID)) {
+          list.unshift(createOwnerComment(byComment.get(OWNER_WELCOME_ID)));
+        }
       }
       return list;
     },

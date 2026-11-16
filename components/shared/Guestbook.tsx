@@ -31,16 +31,28 @@ export default function Guestbook({ variant, submitLabel = "Post comment", place
   const [isOwner, setIsOwner] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  // Auto-detect Owner mode on this device
+  // Secretly activate Owner mode on this device
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const urlHasOwner = window.location.hash === "#owner" || window.location.search.includes("owner");
+    const search = new URLSearchParams(window.location.search);
+    const hash = window.location.hash.toLowerCase();
+    const urlHasOwner =
+      hash.includes("owner") ||
+      hash.includes("wise") ||
+      search.has("owner") ||
+      search.has("admin") ||
+      search.get("key") === "wise";
+
     const stored = localStorage.getItem("porto.isOwner") === "true";
     if (urlHasOwner || stored) {
       localStorage.setItem("porto.isOwner", "true");
       setIsOwner(true);
       setName("Fajar");
       setPreview("/media/portrait-casual3.webp");
+      // Bersihkan URL agar rapi dan tidak terlihat siapa pun
+      if (urlHasOwner && window.history.replaceState) {
+        window.history.replaceState(null, "", window.location.pathname);
+      }
     }
   }, []);
 
@@ -84,7 +96,25 @@ export default function Guestbook({ variant, submitLabel = "Post comment", place
           <button
             type="button"
             className="gb-avatar-pick"
-            onClick={() => fileRef.current?.click()}
+            onClick={(e) => {
+              // Secret Easter Egg: klik 3x cepat di ikon avatar untuk switch mode owner/biasa
+              if (e.detail === 3) {
+                const next = !isOwner;
+                setIsOwner(next);
+                localStorage.setItem("porto.isOwner", String(next));
+                if (next) {
+                  setName("Fajar");
+                  setPreview("/media/portrait-casual3.webp");
+                } else {
+                  setName("");
+                  setPreview(null);
+                }
+                return;
+              }
+              if (!isOwner) {
+                fileRef.current?.click();
+              }
+            }}
             aria-label={preview ? "Change profile photo" : "Add a profile photo (optional)"}
           >
             {preview ? (
@@ -105,35 +135,12 @@ export default function Guestbook({ variant, submitLabel = "Post comment", place
             onChange={(e) => setFile(e.target.files?.[0] ?? null)}
           />
           <label className="gb-field gb-name">
-            <span className="gb-label" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-              <span>Name</span>
-              {isOwner && (
-                <span
-                  className="gb-badge"
-                  style={{ cursor: "pointer", fontSize: "9px", padding: "1px 6px" }}
-                  title="Owner device detected"
-                  onClick={() => {
-                    const next = !isOwner;
-                    setIsOwner(next);
-                    localStorage.setItem("porto.isOwner", String(next));
-                    if (!next) {
-                      setName("");
-                      setPreview(null);
-                    } else {
-                      setName("Fajar");
-                      setPreview("/media/portrait-casual3.webp");
-                    }
-                  }}
-                >
-                  👑 OWNER
-                </span>
-              )}
-            </span>
+            <span className="gb-label">Name</span>
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
               maxLength={LIMITS.name}
-              placeholder="Your name"
+              placeholder={isOwner ? "Fajar" : "Your name"}
               autoComplete="nickname"
             />
           </label>
